@@ -60,3 +60,8 @@ suite "parseArgs":
     var args = @["[", "text", "x=10", "y=20", "z=$NR", "TEXT=HelloWorld", "]"]
     let got = parseArgs(args, 1, @[])
     check $want == $got
+
+suite "svgo":
+  test "svgo [ circle cx=100 cy=200 r=50 ]":
+    check 0 == svgo(args = @["[", "circle", "cx=100", "cy=200", "r=50", "]"])
+
