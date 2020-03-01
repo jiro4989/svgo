@@ -1,4 +1,4 @@
-import os, xmltree, strutils
+import xmltree, strutils
 from strformat import `&`
 from sequtils import delete
 
