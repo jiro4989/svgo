@@ -92,10 +92,17 @@ Animation GIF
 
 .. code-block:: shell
 
-   (seq 1 10 100; seq 100 -10 0) | svgo [ circle cx=100 cy=100 r='$1' ] -in -w 3 -o 'out_$NR.svg'
-   convert -density 1200 -resize 200x200 out_*.svg anim1.gif
+   $ (seq 1 10 100; seq 100 -10 0) | svgo [ circle cx=100 cy=100 r='$1' ] -in -w 3 -o 'out_$NR.svg'
+   $ convert -density 1200 -resize 200x200 out_*.svg anim1.gif
 
 |image-demo-anim1|
+
+.. code-block:: shell
+
+   $ (seq 5 | awk '{print $1 * 40, 200}' | tee >(awk '{print $2, $1}')) | svgo [ rect x=0 y=0 width='$1' height='$2' ] -ino 'out_$NR.svg'
+   $ convert -resize 200x200 out*.svg anim2.gif
+
+|image-demo-anim2|
 
 Installation
 ============
@@ -110,4 +117,5 @@ LICENSE
 MIT
 
 .. |image-demo-anim1| image:: ./docs/anim1.gif
+.. |image-demo-anim2| image:: ./docs/anim2.gif
 
