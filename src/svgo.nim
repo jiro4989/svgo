@@ -101,6 +101,13 @@ when isMainModule and not defined modeTest:
   import cligen
   clCfg.version = version
   dispatch(svgo,
+           help = {
+            "useStdin":"activate a flag to read stdin",
+            "autoIncrementOutFileNumber":"activate a variable of current record number for outfile",
+            "outFileNumberWidth":"set a padding width of outfile number",
+            "width":"set a width of SVG object",
+            "height":"set a height of SVG object",
+           },
            short = {
             "useStdin":'i',
             "autoIncrementOutFileNumber":'n',
