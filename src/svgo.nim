@@ -1,5 +1,6 @@
 import os, xmltree, strutils
 from strformat import `&`
+from sequtils import delete
 
 import cligen
 
@@ -14,31 +15,50 @@ https://github.com/jiro4989/svgo"""
   svgDocType = """<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">"""
 
 proc parseAttrArg(s: string): (string, string) =
+  if "=" notin s:
+    raise newException(SvgoError, &"illegal argument format: arg = '{s}'")
   let kv = s.split("=")
   let key = kv[0]
   let value = kv[1..^1].join("=")
   result = (key, value)
 
-proc parseArgs(args: seq[string]): XmlNode =
-  var needElemName = true
-  var attrs: seq[(string, string)]
-  for arg in args:
+proc parseArgs(args: var seq[string]): XmlNode =
+  var rawAttrs: seq[string]
+  var level: int
+  while true:
+    let arg = args[0]
     case arg
-    of "[": discard
-    of "]": discard
+    of "[":
+      inc(level)
+      if 2 <= level:
+        let childNode = parseArgs(args)
+        result.add(childNode)
+        dec(level)
+      else:
+        args.delete(0, 0)
+    of "]":
+      dec(level)
+      args.delete(0, 0)
+      var attrs: seq[(string, string)]
+      for rawAttr in rawAttrs:
+        let attr = parseAttrArg(rawAttr)
+        attrs.add(attr)
+      result.attrs = attrs.toXmlAttributes
+      rawAttrs = @[]
+      if level <= 0:
+        break
     else:
-      if needElemName:
+      args.delete(0, 0)
+      if result == nil:
         result = newElement(arg)
-        needElemName = false
         continue
-      if "=" notin arg:
-        raise newException(SvgoError, &"illegal argument format: arg = '{arg}'")
-      let attr = parseAttrArg(arg)
-      attrs.add(attr)
-  result.attrs = attrs.toXmlAttributes
+      rawAttrs.add(arg)
+  if 0 < level:
+    raise newException(SvgoError, "illegal tree")
 
 proc svgo(width=200, height=200, args: seq[string]): int =
-  let node = parseArgs(args[0..^2])
+  var vArgs = args[0..^2]
+  let node = parseArgs(vArgs)
   let outFile = args[^1]
   if outFile == "-":
     echo xmlHeader
