@@ -99,6 +99,13 @@ You can generate animation GIF with ImageMagick (`convert`).
 
 |image-demo-anim4|
 
+.. code-block:: shell
+
+   $ seq 0 16 360 | svgo [ g rotate='$1' [ rect x=0 y=0 width=100 height=100 ] ] -ino 'out_$NR.svg'
+   $ convert -resize 200x200 out*.svg anim5.gif
+
+|image-demo-anim5|
+
 Installation
 ============
 
@@ -159,6 +166,7 @@ MIT
 .. |image-demo-anim2| image:: ./docs/anim2.gif
 .. |image-demo-anim3| image:: ./docs/anim3.gif
 .. |image-demo-anim4| image:: ./docs/anim4.gif
+.. |image-demo-anim5| image:: ./docs/anim5.gif
 
 See also
 ========
