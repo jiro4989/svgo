@@ -19,7 +19,10 @@ proc replaceSpecialVariables(s: string, nr: int, fields: seq[string]): string =
   result = s
     .replace("$NR", $nr)
     .replace("$NF", $fields.len)
-  for i, f in fields:
+  if fields.len < 1: return
+  # NOTE: for replacing $10, and replace $1
+  for i in countdown(fields.len-1, 0):
+    let f = fields[i]
     let i = i + 1
     result = result.replace(&"${i}", f)
 

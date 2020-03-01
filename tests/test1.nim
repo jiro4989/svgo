@@ -13,6 +13,8 @@ suite "parseAttrArg":
     check parseAttrArg("cx=$3", 1, @["100", "200"]) == ("cx", "$3")
   test "cx=$NR == cx=1":
     check parseAttrArg("cx=$NR", 1, @["100", "200"]) == ("cx", "1")
+  test "cx=$10 == cx=4":
+    check parseAttrArg("cx=$10", 1, @["99", "1", "1", "1", "1", "1", "1", "1", "1", "4"]) == ("cx", "4")
 
 suite "parseArgs":
   test "[ circle cx=100 cy=100 ]":
