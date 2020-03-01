@@ -11,6 +11,7 @@ const
 Copyright (c) 2020 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/svgo"""
+  svgDocType = """<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">"""
 
 proc parseAttrArg(s: string): (string, string) =
   let kv = s.split("=")
@@ -40,7 +41,11 @@ proc svgo(width=200, height=200, args: seq[string]): int =
   let node = parseArgs(args[0..^2])
   let outFile = args[^1]
   if outFile == "-":
-    echo node
+    echo xmlHeader
+    echo svgDocType
+    let attr = {"width": $width, "height": $height, "version":"1.1", "xmlns":"http://www.w3.org/2000/svg"}.toXmlAttributes
+    let tree = newXmlTree("svg", [node], attr)
+    echo tree
 
 when isMainModule and not defined modeTest:
   import cligen
