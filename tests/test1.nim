@@ -46,3 +46,10 @@ suite "parseArgs":
     var args = @["[", "g", "[", "circle", "cx=100", "cy=100", "]", "[", "rect", "x=0", "y=0", "width=200", "height=200", "]", "]"]
     let got = parseArgs(args, @[])
     check $want == $got
+  test "[ text x=10 y=20 TEXT=HelloWorld ]":
+    var want = newElement("text")
+    want.attrs = {"x":"10", "y":"20"}.toXmlAttributes
+    want.add(newText("HelloWorld"))
+    var args = @["[", "text", "x=10", "y=20", "TEXT=HelloWorld", "]"]
+    let got = parseArgs(args, @[])
+    check $want == $got

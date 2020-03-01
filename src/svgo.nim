@@ -45,6 +45,10 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
       args.delete(0, 0)
       var attrs: seq[(string, string)]
       for rawAttr in rawAttrs:
+        if rawAttr.startsWith("TEXT="):
+          let text = rawAttr[5..^1]
+          result.add(newText(text))
+          continue
         let attr = parseAttrArg(rawAttr, fields)
         attrs.add(attr)
       result.attrs = attrs.toXmlAttributes
