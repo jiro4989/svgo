@@ -97,4 +97,17 @@ Animation GIF
 
 |image-demo-anim1|
 
+Installation
+============
+
+.. code-block:: shell
+
+   $ nimble install -Y svgo
+
+LICENSE
+=======
+
+MIT
+
 .. |image-demo-anim1| image:: ./docs/anim1.gif
+
