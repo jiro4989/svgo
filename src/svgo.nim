@@ -15,18 +15,24 @@ https://github.com/jiro4989/svgo"""
   svgDocType = """<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 """
 
-proc parseAttrArg(s: string, fields: seq[string]): (string, string) =
+proc replaceSpecialVariables(s: string, nr: int, fields: seq[string]): string =
+  result = s
+    .replace("$NR", $nr)
+    .replace("$NF", $fields.len)
+  for i, f in fields:
+    let i = i + 1
+    result = result.replace(&"${i}", f)
+
+proc parseAttrArg(s: string, nr: int, fields: seq[string]): (string, string) =
   if "=" notin s:
     raise newException(SvgoError, &"illegal argument format: arg = '{s}'")
   let kv = s.split("=")
   let key = kv[0]
   var value = kv[1..^1].join("=")
-  for i, f in fields:
-    let i = i + 1
-    value = value.replace(&"${i}", f)
+  value = value.replaceSpecialVariables(nr, fields)
   result = (key, value)
 
-proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
+proc parseArgs(args: var seq[string], nr: int, fields: seq[string]): XmlNode =
   var rawAttrs: seq[string]
   var level: int
   while true:
@@ -35,7 +41,7 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
     of "[":
       inc(level)
       if 2 <= level:
-        let childNode = parseArgs(args, fields)
+        let childNode = parseArgs(args, nr, fields)
         result.add(childNode)
         dec(level)
       else:
@@ -49,7 +55,7 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
           let text = rawAttr[5..^1]
           result.add(newText(text))
           continue
-        let attr = parseAttrArg(rawAttr, fields)
+        let attr = parseAttrArg(rawAttr, nr, fields)
         attrs.add(attr)
       result.attrs = attrs.toXmlAttributes
       rawAttrs = @[]
@@ -66,10 +72,10 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
 
 proc svgo(useStdin = false, autoIncrementOutFileNumber = false,
     outFileNumberWidth = 6, width = 200, height = 200, outFile = "", args: seq[string]): int =
-  proc processLine(outFile: string, fields: seq[string], i: int) =
+  proc processLine(outFile: string, nr: int, fields: seq[string]) =
     var outFile = outFile
     var vArgs = args
-    let node = parseArgs(vArgs, fields)
+    let node = parseArgs(vArgs, nr, fields)
     var body: string
     body.add(xmlHeader)
     body.add(svgDocType)
@@ -85,18 +91,18 @@ proc svgo(useStdin = false, autoIncrementOutFileNumber = false,
       echo body
     else:
       if useStdin and autoIncrementOutFileNumber:
-        let num = align($i, outFileNumberWidth, '0')
+        let num = align($nr, outFileNumberWidth, '0')
         outFile = outFile.replace("$NR", num)
       writeFile(outFile, body)
 
   if useStdin:
     var i: int
     for line in stdin.lines:
-      let fields = line.split(" ")
-      processLine(outFile, fields, i)
       inc(i)
+      let fields = line.split(" ")
+      processLine(outFile, i, fields)
     return
-  processLine(outFile, @[], 0)
+  processLine(outFile, 1, @[])
 
 when isMainModule and not defined modeTest:
   import cligen
