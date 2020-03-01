@@ -60,7 +60,7 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
   if 0 < level:
     raise newException(SvgoError, "illegal tree")
 
-proc svgo(useStdin=false, autoIncrementOutFileNumber=false, width=200, height=200, outFile="", args: seq[string]): int =
+proc svgo(useStdin=false, autoIncrementOutFileNumber=false, outFileNumberWidth=6, width=200, height=200, outFile="", args: seq[string]): int =
   proc processLine(outFile: string, fields: seq[string], i: int) =
     var outFile = outFile
     var vArgs = args
@@ -80,7 +80,8 @@ proc svgo(useStdin=false, autoIncrementOutFileNumber=false, width=200, height=20
       echo body
     else:
       if useStdin and autoIncrementOutFileNumber:
-        outFile = outFile.replace("$0", $i)
+        let num = align($i, outFileNumberWidth, '0')
+        outFile = outFile.replace("$0", num)
       writeFile(outFile, body)
 
   if useStdin:
@@ -99,6 +100,7 @@ when isMainModule and not defined modeTest:
            short = {
             "useStdin":'i',
             "autoIncrementOutFileNumber":'n',
+            "outFileNumberWidth":'w',
             "width":'W',
             "height":'H',
             })
