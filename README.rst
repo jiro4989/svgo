@@ -2,6 +2,8 @@
 svgo
 ====
 
+|nimble-version| |nimble-install| |gh-actions|
+
 This is svgo, a small utility to create SVG objects.
 This was inspired by `jpmens/jo <https://github.com/jpmens/jo>`_.
 
@@ -173,3 +175,9 @@ See also
 .. |image-demo-anim4| image:: ./docs/anim4.gif
 .. |image-demo-anim5| image:: ./docs/anim5.gif
 
+.. |gh-actions| image:: https://github.com/jiro4989/svgo/workflows/build/badge.svg
+   :target: https://github.com/jiro4989/svgo/actions
+.. |nimble-version| image:: https://nimble.directory/ci/badges/svgo/version.svg
+   :target: https://nimble.directory/ci/badges/svgo/nimdevel/output.html
+.. |nimble-install| image:: https://nimble.directory/ci/badges/svgo/nimdevel/status.svg
+   :target: https://nimble.directory/ci/badges/svgo/nimdevel/output.html
