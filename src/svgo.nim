@@ -12,7 +12,8 @@ const
 Copyright (c) 2020 jiro4989
 Released under the MIT License.
 https://github.com/jiro4989/svgo"""
-  svgDocType = """<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">"""
+  svgDocType = """<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+"""
 
 proc parseAttrArg(s: string, fields: seq[string]): (string, string) =
   if "=" notin s:
@@ -59,21 +60,41 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
   if 0 < level:
     raise newException(SvgoError, "illegal tree")
 
-proc svgo(useStdin=false, width=200, height=200, args: seq[string]): int =
-  var vArgs = args[0..^2]
-  let outFile = args[^1]
+proc svgo(useStdin=false, autoIncrementOutFileNumber=false, width=200, height=200, args: seq[string]): int =
+  template processLine(fields: seq[string], i: int) =
+    block:
+      var vArgs = args[0..^2]
+      let node = parseArgs(vArgs, fields)
+      var body: string
+      body.add(xmlHeader)
+      body.add(svgDocType)
+      let attr = {"width": $width, "height": $height, "version":"1.1", "xmlns":"http://www.w3.org/2000/svg"}.toXmlAttributes
+      let tree = newXmlTree("svg", [node], attr)
+      body.add($tree)
+      if outFile == "-":
+        echo body
+      else:
+        if useStdin and autoIncrementOutFileNumber:
+          outFile = outFile.replace("$#", $i)
+        writeFile(outFile, body)
+
+  var outFile = args[^1]
   if useStdin:
+    var i: int
     for line in stdin.lines:
       let fields = line.split(" ")
-      let node = parseArgs(vArgs, fields)
-      if outFile == "-":
-        echo xmlHeader
-        echo svgDocType
-        let attr = {"width": $width, "height": $height, "version":"1.1", "xmlns":"http://www.w3.org/2000/svg"}.toXmlAttributes
-        let tree = newXmlTree("svg", [node], attr)
-        echo tree
+      processLine(fields, i)
+      inc(i)
+    return
+  processLine(@[], 0)
 
 when isMainModule and not defined modeTest:
   import cligen
   clCfg.version = version
-  dispatch(svgo, short = {"useStdin":'i', "width":'W', "height":'H'})
+  dispatch(svgo,
+           short = {
+            "useStdin":'i',
+            "autoIncrementOutFileNumber":'n',
+            "width":'W',
+            "height":'H',
+            })
