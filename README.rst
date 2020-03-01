@@ -122,6 +122,8 @@ Installation
 
    $ nimble install -Y svgo
 
+or install binaries from `Releases <https://github.com/jiro4989/svgo/releases>`_.
+
 Special variables
 =================
 
