@@ -64,7 +64,8 @@ proc parseArgs(args: var seq[string], fields: seq[string]): XmlNode =
   if 0 < level:
     raise newException(SvgoError, "illegal tree")
 
-proc svgo(useStdin=false, autoIncrementOutFileNumber=false, outFileNumberWidth=6, width=200, height=200, outFile="", args: seq[string]): int =
+proc svgo(useStdin = false, autoIncrementOutFileNumber = false,
+    outFileNumberWidth = 6, width = 200, height = 200, outFile = "", args: seq[string]): int =
   proc processLine(outFile: string, fields: seq[string], i: int) =
     var outFile = outFile
     var vArgs = args
@@ -75,8 +76,8 @@ proc svgo(useStdin=false, autoIncrementOutFileNumber=false, outFileNumberWidth=6
     let attr = {
       "width": $width,
       "height": $height,
-      "version":"1.1",
-      "xmlns":"http://www.w3.org/2000/svg",
+      "version": "1.1",
+      "xmlns": "http://www.w3.org/2000/svg",
       }.toXmlAttributes
     let tree = newXmlTree("svg", [node], attr)
     body.add($tree)
@@ -100,18 +101,19 @@ proc svgo(useStdin=false, autoIncrementOutFileNumber=false, outFileNumberWidth=6
 when isMainModule and not defined modeTest:
   import cligen
   clCfg.version = version
-  dispatch(svgo,
-           help = {
-            "useStdin":"activate a flag to read stdin",
-            "autoIncrementOutFileNumber":"activate a variable of current record number for outfile",
-            "outFileNumberWidth":"set a padding width of outfile number",
-            "width":"set a width of SVG object",
-            "height":"set a height of SVG object",
-           },
-           short = {
-            "useStdin":'i',
-            "autoIncrementOutFileNumber":'n',
-            "outFileNumberWidth":'w',
-            "width":'W',
-            "height":'H',
-            })
+  dispatch(
+    svgo,
+    help = {
+      "useStdin": "activate a flag to read stdin",
+      "autoIncrementOutFileNumber": "activate a variable of current record number for outfile",
+      "outFileNumberWidth": "set a padding width of outfile number",
+      "width": "set a width of SVG object",
+      "height": "set a height of SVG object",
+    },
+    short = {
+      "useStdin": 'i',
+      "autoIncrementOutFileNumber": 'n',
+      "outFileNumberWidth": 'w',
+      "width": 'W',
+      "height": 'H',
+    })
