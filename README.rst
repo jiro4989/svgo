@@ -44,6 +44,28 @@ Nested elements.
        <circle cy="100" cx="100" fill="#DDD" stroke="teal" r="80" />
      </g></svg>
 
+Use stdin fields. (`-i`)
+
+.. code-block:: shell
+
+   $ seq 0 25 100 | svgo [ circle cx=100 cy=100 r='$1' ] -i
+
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="100" cx="100" r="0" /></svg>
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="100" cx="100" r="25" /></svg>
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="100" cx="100" r="50" /></svg>
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="100" cx="100" r="75" /></svg>
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="100" cx="100" r="100" /></svg>
+
 Animation GIF
 -------------
 
