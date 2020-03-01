@@ -14,6 +14,8 @@ binDir        = "bin"
 requires "nim >= 1.0.6"
 requires "cligen >= 0.9.32"
 
+import os, strformat
+
 task archive, "Create archived assets":
   let app = "svgo"
   let assets = &"{app}_{buildOS}"
