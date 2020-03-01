@@ -47,6 +47,8 @@ Nested elements.
 Animation GIF
 -------------
 
+You can generate animation GIF with ImageMagick (`convert`).
+
 .. code-block:: shell
 
    $ (seq 1 10 100; seq 100 -10 0) | svgo [ circle cx=100 cy=100 r='$1' ] -in -w 3 -o 'out_$NR.svg'
@@ -127,4 +129,9 @@ MIT
 .. |image-demo-anim1| image:: ./docs/anim1.gif
 .. |image-demo-anim2| image:: ./docs/anim2.gif
 .. |image-demo-anim3| image:: ./docs/anim3.gif
+
+See also
+========
+
+* `SVG 1.1 - W3C <https://www.w3.org/TR/SVG11/>`_
 
