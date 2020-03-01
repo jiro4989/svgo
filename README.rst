@@ -104,6 +104,13 @@ Animation GIF
 
 |image-demo-anim2|
 
+.. code-block:: shell
+
+   $ yes 'echo $((RANDOM % 200)) $((RANDOM % 200))' | head | bash | svgo [ circle cx='$1' cy='$2' r='50' ] -ino 'out_$NR.svg'
+   $ convert -resize 200x200 out*.svg anim3.gif
+
+|image-demo-anim3|
+
 Installation
 ============
 
@@ -118,4 +125,5 @@ MIT
 
 .. |image-demo-anim1| image:: ./docs/anim1.gif
 .. |image-demo-anim2| image:: ./docs/anim2.gif
+.. |image-demo-anim3| image:: ./docs/anim3.gif
 
