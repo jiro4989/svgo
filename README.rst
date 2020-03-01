@@ -136,29 +136,21 @@ when activate `-i (--use-stdin)` flag.
 
    $ seq 3 | svgo -i [ circle cx=100 cy=200 r='$1' ]
 
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="200" cx="100" r="1" /></svg>
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="200" cx="100" r="2" /></svg>
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="200" cx="100" r="3" /></svg>
+   # equals
+
+   $ svgo [ circle cx=100 cy=200 r='1' ]
+   $ svgo [ circle cx=100 cy=200 r='2' ]
+   $ svgo [ circle cx=100 cy=200 r='3' ]
 
 .. code-block:: shell
 
    $ seq 3 | awk '{print $1, $1*10}' | svgo -i [ circle cx='$1' cy='$2' r='$1' ]
 
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="10" cx="1" r="1" /></svg>
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="20" cx="2" r="2" /></svg>
-   <?xml version="1.0" encoding="UTF-8" ?>
-   <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-   <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="30" cx="3" r="3" /></svg>
+   # equals
+
+   $ svgo [ circle cx='1' cy='10' r='1' ]
+   $ svgo [ circle cx='2' cy='20' r='2' ]
+   $ svgo [ circle cx='3' cy='30' r='3' ]
 
 Current record number (NR)
 --------------------------
