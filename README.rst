@@ -44,11 +44,42 @@ Nested elements.
        <circle cy="100" cx="100" fill="#DDD" stroke="teal" r="80" />
      </g></svg>
 
+Animation GIF
+-------------
+
+.. code-block:: shell
+
+   $ (seq 1 10 100; seq 100 -10 0) | svgo [ circle cx=100 cy=100 r='$1' ] -in -w 3 -o 'out_$NR.svg'
+   $ convert -density 1200 -resize 200x200 out_*.svg anim1.gif
+
+|image-demo-anim1|
+
+.. code-block:: shell
+
+   $ (seq 5 | awk '{print $1 * 40, 200}' | tee >(awk '{print $2, $1}')) | svgo [ rect x=0 y=0 width='$1' height='$2' ] -ino 'out_$NR.svg'
+   $ convert -resize 200x200 out*.svg anim2.gif
+
+|image-demo-anim2|
+
+.. code-block:: shell
+
+   $ yes 'echo $((RANDOM % 200)) $((RANDOM % 200))' | head | bash | svgo [ circle cx='$1' cy='$2' r='50' ] -ino 'out_$NR.svg'
+   $ convert -resize 200x200 out*.svg anim3.gif
+
+|image-demo-anim3|
+
+Installation
+============
+
+.. code-block:: shell
+
+   $ nimble install -Y svgo
+
 Special variables
------------------
+=================
 
 Field variables ($1, $2, ... $NF)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+---------------------------------
 
 Records are read in stdin at a time, and stored in the field variables.
 The record is split into fields which are stored in $1, $2, ..., $NF like `awk`
@@ -83,40 +114,10 @@ when activate `-i (--use-stdin)` flag.
    <svg version="1.1" width="200" xmlns="http://www.w3.org/2000/svg" height="200"><circle cy="30" cx="3" r="3" /></svg>
 
 Current record number (NR)
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+--------------------------
 
 TODO
 
-Animation GIF
--------------
-
-.. code-block:: shell
-
-   $ (seq 1 10 100; seq 100 -10 0) | svgo [ circle cx=100 cy=100 r='$1' ] -in -w 3 -o 'out_$NR.svg'
-   $ convert -density 1200 -resize 200x200 out_*.svg anim1.gif
-
-|image-demo-anim1|
-
-.. code-block:: shell
-
-   $ (seq 5 | awk '{print $1 * 40, 200}' | tee >(awk '{print $2, $1}')) | svgo [ rect x=0 y=0 width='$1' height='$2' ] -ino 'out_$NR.svg'
-   $ convert -resize 200x200 out*.svg anim2.gif
-
-|image-demo-anim2|
-
-.. code-block:: shell
-
-   $ yes 'echo $((RANDOM % 200)) $((RANDOM % 200))' | head | bash | svgo [ circle cx='$1' cy='$2' r='50' ] -ino 'out_$NR.svg'
-   $ convert -resize 200x200 out*.svg anim3.gif
-
-|image-demo-anim3|
-
-Installation
-============
-
-.. code-block:: shell
-
-   $ nimble install -Y svgo
 
 LICENSE
 =======
