@@ -162,14 +162,14 @@ LICENSE
 
 MIT
 
+See also
+========
+
+* `SVG 1.1 - W3C <https://www.w3.org/TR/SVG11/>`_
+
 .. |image-demo-anim1| image:: ./docs/anim1.gif
 .. |image-demo-anim2| image:: ./docs/anim2.gif
 .. |image-demo-anim3| image:: ./docs/anim3.gif
 .. |image-demo-anim4| image:: ./docs/anim4.gif
 .. |image-demo-anim5| image:: ./docs/anim5.gif
-
-See also
-========
-
-* `SVG 1.1 - W3C <https://www.w3.org/TR/SVG11/>`_
 
