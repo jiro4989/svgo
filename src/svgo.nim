@@ -81,7 +81,7 @@ proc svgo(useStdin=false, autoIncrementOutFileNumber=false, outFileNumberWidth=6
     else:
       if useStdin and autoIncrementOutFileNumber:
         let num = align($i, outFileNumberWidth, '0')
-        outFile = outFile.replace("$0", num)
+        outFile = outFile.replace("$NR", num)
       writeFile(outFile, body)
 
   if useStdin:
