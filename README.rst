@@ -111,9 +111,22 @@ You can generate animation GIF with ImageMagick (`convert`).
 .. code-block:: shell
 
    $ seq 10 2 30 | svgo -i [ text x=0 y='$1' font-size='$1' TEXT=HelloWorld ] -no 'out_$NR.svg'
-   $ convert -resize 200x200 out*.svg anim5.gif
+   $ convert -resize 200x200 out*.svg anim6.gif
 
 |image-demo-anim6|
+
+.. code-block:: shell
+
+   $ r=100
+     j=0
+     for i in f47 d47 b47 947 747 547 347 147 047 027; do
+       j=$((j+1))
+       svgo [ circle cx=100 cy=100 r=$r fill="#$i" ] > out_$(printf %02d $j).svg
+       r=$((r-10))
+     done
+   $ convert out*.svg anim7.gif
+
+|image-demo-anim7|
 
 Installation
 ============
@@ -176,6 +189,7 @@ See also
 .. |image-demo-anim4| image:: ./docs/anim4.gif
 .. |image-demo-anim5| image:: ./docs/anim5.gif
 .. |image-demo-anim6| image:: ./docs/anim6.gif
+.. |image-demo-anim7| image:: ./docs/anim7.gif
 
 .. |gh-actions| image:: https://github.com/jiro4989/svgo/workflows/build/badge.svg
    :target: https://github.com/jiro4989/svgo/actions
